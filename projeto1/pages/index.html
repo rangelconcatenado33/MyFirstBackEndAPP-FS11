@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web-form</title>
+</head>
+<body>
+	<style type="text/css">
+   
+  @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Mukta&family=Poppins:wght@300&family=Roboto&display=swap');
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Mukta&family=Poppins:wght@300&family=Roboto&display=swap');
+
+ 	
+
+		h1{
+			font-family: 'Black Ops One', cursiva;
+		}
+
+		h2{
+			font-family: 'Didact Gothic', sans-serif;
+
+			color: #45a049;
+		}
+
+		main{
+
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			gap: 2%;
+		}
+
+		#form {
+			margin: 0 auto;
+			width: 420px;
+			padding: 1em;
+			border: 1px solid #CCC;
+			border-radius: 1em;
+			margin-top: 5%;
+			font-family: 'Didact Gothic', sans-serif;
+		}
+		label {
+			display: inline-block;
+			width: 90px;
+			text-align: right;
+		}
+		input[type="text"],
+		input[type="email"],
+		input[type="tel"],
+		select,
+		textarea {
+			padding: 0.5em;
+			margin-bottom: 1em;
+			border-radius: 0.25em;
+			border: none;
+			box-shadow: 0px 0px 5px #CCC;
+			width: 100%;
+		}
+		input[type="submit"]{
+			background-color: #4CAF50;
+			color: white;
+			padding: 0.5em;
+			border-radius: 0.25em;
+			border: none;
+			cursor: pointer;
+		}
+		input[type="submit"]:hover {
+			background-color: #45a049;
+		}
+	</style>
+
+	<main>
+
+		<h1>NodeServer.com</h1>
+
+		<h2>Server Web for Universal DataTypes</h2>
+
+	</main>
+
+<form id="form">
+
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name" required placeholder="Digite seu nome">
+    <br>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required placeholder="Digite seu email"><br>
+
+    <label for="phone">Telefone:</label>
+    <input type="tel" id="phone" name="phone" placeholder="Digite seu cell number"><br>
+
+    <label for="subject">Assunto:</label>
+    <select id="subject" name="subject">
+        <option value="">Selecione um assunto</option>
+        <option value="suporte">Suporte</option>
+        <option value="vendas">Vendas</option>
+        <option value="outro">Outro</option>
+    </select><br>
+
+    <label for="message">Mensagem:</label>
+    <textarea id="message" name="message"></textarea><br>
+
+    <input type="submit" value="Enviar" onclick="enviarDados()">
+
+</form>
+
+<script>
+
+/*Esta Classe foi criada para encapsular dados que serão renderizados pelo 
+navegador. */
+
+class ProcessandoDados{
+
+	constructor(nome, email, phone, assunto, mensagem){
+
+		this.nome = nome;
+
+		this.email = email;
+
+		this.phone = phone;
+
+		this.assunto = assunto;
+
+		this.mensagem = mensagem;
+
+	}
+
+	imprimir(){
+
+	console.log("Os seguintes dados foram enviados:")
+	console.log("*********************************")
+	console.log(
+
+		this.nome + "/n",
+
+		this.email + "/n",
+		
+		this.phone + "/n",
+
+		this.assunto + "/n",
+
+		this.mensagem 
+	)
+
+	}
+
+}
+
+/*Essa função coleta os dados do usuário, os processa, os envia para a classe
+a cima, e insere esses dados em um JSON. Essa função é executada mediante um evento de click
+no botão do formulário */
+
+function enviarDados() {
+
+	//Coletando os dados 
+	
+	const dataNome = window.document.getElementById('name').value;
+
+	const dataEmail = window.document.getElementById('email').value;
+
+	const dataPhone = window.document.getElementById('phone').value;
+
+	const dataAssunto = window.document.getElementById('subject').value;
+
+	const dataMsg = window.document.getElementById('message').value;
+
+	/*Instanciando um objeto a Classe e enviando dados para ela */
+
+	const enviandoDadosParaAclasse = new ProcessandoDados(dataNome,dataEmail, 
+
+	dataPhone, dataAssunto, dataMsg);
+
+	//Dados a serem enviados para a nossa API
+
+	const DataJson = {
+
+		"nome": dataNome,
+
+		"email": dataEmail,
+
+		"phone": dataPhone,
+
+		"assunto": dataAssunto,
+
+		"mensagem": dataMsg
+
+	}
+
+// Configurando a requisição
+fetch('/api/server/fs11', {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(DataJson)
+
+}).then(function(response) {
+    if (response.ok) {
+        console.log('Dados enviados com sucesso!');
+    } else {
+        console.log('Falha ao enviar os dados. Código de status:', response.status);
+    }
+
+}).catch(function(error) {
+
+    console.log('Ocorreu um erro:', error);
+
+});
+
+
+}
+
+</script>
+
+</body>
+</html>
